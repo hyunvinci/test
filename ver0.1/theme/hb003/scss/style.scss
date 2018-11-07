@@ -1,0 +1,113 @@
+$ro: 9em;
+$ri: .5*$ro;
+$c0: #dedc02;
+$c3: #e79600;
+$c1: #02dede;
+$c4: #019767;
+$a: .25;
+
+@function ring-thck($c: $c0) {
+	@return
+		rgba($c, 0) calc(#{$ri} + 3px), 
+		rgba($c, 1) calc(#{$ri} + 7px), 
+		rgba($c, 1) calc(#{$ri} + 10px), 
+		rgba($c, 0) calc(#{$ri} + 13px), 
+		rgba($c, 0) calc(#{$ro} - 13px), 
+		rgba($c, 1) calc(#{$ro} - 10px), 
+		rgba($c, 1) calc(#{$ro} - 7px), 
+		rgba($c, 0) calc(#{$ro} - 3px)
+}
+
+@function ring-slim($c: $c0, $f: 0%, $p: 23px) {
+	@return 
+		rgba($c, 0) 0,   
+		rgba($c, 0) $p - 1px, 
+		darken(rgba($c, .4), $f) $p, 
+		rgba($c, 0) $p - 1px
+}
+
+@function metal($c: $c0, $cpos: 50% 100%, $bpos: 0 0/ 100% 50%) {
+	@return 
+		repeating-radial-gradient(circle at $cpos, 
+				ring-slim()) $bpos, 
+			repeating-radial-gradient(circle at $cpos, 
+				ring-slim($c, 3%, 17px)) $bpos, 
+			repeating-radial-gradient(circle at $cpos, 
+				ring-slim($c, 5%, 23px)) $bpos, 
+			repeating-radial-gradient(circle at $cpos, 
+				ring-slim($c, 2%, 19px)) $bpos, 
+			repeating-radial-gradient(circle at $cpos, 
+				ring-slim($c, 4%, 27px)) $bpos, 
+			repeating-radial-gradient(circle at $cpos, 
+				ring-slim($c, 1%, 29px)) $bpos, 
+			repeating-radial-gradient(circle at $cpos, 
+				ring-slim($c, 2%, 7px)) $bpos,  
+			repeating-radial-gradient(circle at $cpos, 
+				ring-slim($c, 0%, 3px)) $bpos,  
+			repeating-radial-gradient(circle at $cpos, 
+				ring-slim($c, 2%, 5px)) $bpos
+}
+
+@function shade($cv: rgba(#000, $a), $ch: rgba(#fff, $a)) {
+	@return conic-gradient($cv 5%, $ch 15%, $ch 35%, $cv 45%, $cv 55%, $ch 65%, $ch 85%, $cv 95%)
+}
+
+* { margin: 0; padding: 0 }
+
+body {
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	background: url(https://images.unsplash.com/photo-1520642698632-5f93df0ffe01?ixlib=rb-0.3.5&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0NTg5fQ&s=0909129dff7b3a76eafa45141e813497) 50%/ cover #000;
+	color: #fff;
+	font: 900 3vmin/ 1.25 homemade apple, cursive
+}
+
+h2 { font-size: 12.5vmin }
+
+.loader {
+	overflow: hidden;
+	position: relative;
+	width: 2*$ro; height: 2*$ro;
+	border-radius: 50%;
+	background: radial-gradient(ring-thck(whitesmoke)), 
+		metal(darkgrey, 50% 50%, 0) silver;
+	--m: radial-gradient(transparent calc(#{$ri} - 1px), red #{$ri});
+	-webkit-mask: var(--m);
+					mask: var(--m);
+	animation: ani 8.67s ease-out infinite reverse;
+	
+	&:before, &:after {
+		position: absolute;
+		padding: $ro;
+		content: ''
+	}
+
+	&:before {
+		background: 
+			radial-gradient(circle at 50% 100%, 
+				ring-thck()) 0 0/ 100% 50%, 
+			metal(), 
+			radial-gradient(circle at 50% 0, 
+				ring-thck($c1)) 0 100%/ 100% 50%, 
+			metal($c1, 50% 0, 0 100%/ 100% 50%), 
+			linear-gradient($c3 50%, $c4 0);
+		background-repeat: no-repeat;
+		--m: #{shade(red, transparent)};
+		-webkit-mask: var(--m);
+						mask: var(--m);
+		animation: ani 1.71s cubic-bezier(.68, -.53, .26, 1.53) infinite
+	}
+
+	&:after {
+		background: shade();
+		animation: inherit;
+		animation-timing-function: ease-in;
+		animation-direction: initial
+	}
+}
+
+@keyframes ani { to { transform: rotate(3turn) } }

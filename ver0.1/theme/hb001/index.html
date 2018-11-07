@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday</title>
+  
+  
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:900'>
+
+      <link rel="stylesheet" href="css/style.css">
+
+  
+</head>
+
+<body>
+
+  <!-- <h1>Happy Birthday</h1> -->
+
+  <div>
+      <script>
+          var message = window.prompt("What do you want to say?");
+
+
+          if(message){
+              document.write("<h1 id='message'>"+message+"</h1>");
+          }else{
+              document.write("<h1 style='font-size: 10px;'>Happy Birthday</h1>");
+          };
+
+      </script>
+
+  </div>
+
+  <div>
+  <canvas id="birthday"></canvas>
+      <script  src="js/index.js"></script>
+  </div>
+
+
+
+</body>
+
+</html>
